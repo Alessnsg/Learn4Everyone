@@ -1,0 +1,7 @@
+{
+  "name": "Learn4EveryOne",
+  "short_name": "Learn4EveryOne",
+  "description": "A WebProgressiveApp where everyone could learn and get hired",
+  "start_url": "/",
+  "display": "standalone"
+}
