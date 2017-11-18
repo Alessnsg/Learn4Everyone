@@ -1,7 +1,39 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../../bower_components/google-signin/google-signin.html">
+<link rel="import" href="../login/learn-toolbar.html">
+<link rel="import" href="../login/learn-login.html">
+
 
 <dom-module id="learn-app">
   <template>
+
+    <learn-toolbar
+      signed-in="[[signedIn]]"
+      on-sign-out="signOut"
+      user-data="[[userData]]">
+      </learn-toolbar>
+
+    <learn-login
+      on-sign-in="signIn"
+      signed-in="[[signedIn]]"
+      disabled="[[!online]]">
+      </learn-login>
+    
+    <firebase-auth
+      id="auth"
+      app-name="learn4everyone"
+      provider="google"
+      signed-in="{{signedIn}}">
+      </firebase-auth>
+
+      <firebase-app
+      name="learn4everyone"
+      api-key="AIzaSyBL7hd9LafQluVljDXZK9V_F2eIhA0CS0c"
+      auth-domain="learn4everyone-80ba5.firebaseapp.com"
+      database-url="https://learn4everyone-80ba5.firebaseio.com">
+    </firebase-app>
   </template>
 
   <script>
@@ -13,6 +45,34 @@
       static get is() {
         return 'learn-app'
       }
+
+      static get properties() {
+        return {
+          userData: {
+            type: Object,
+            value: () => { return {} },
+            reflectToAttribute: true,
+          }
+        }
+      }
+
+      ready() {
+        super.ready();
+      }
+
+      signIn() {
+        let isSignin = this.$.auth.signInWithPopup();
+	      isSignin.then( (data) => {
+          this.userData = data.additionalUserInfo.profile;
+        });
+	    }
+
+      signOut() {
+        if (this.$.auth) {
+          this.$.auth.signOut();
+        }
+      }
+
     }
 
     window.customElements.define(LearnApp.is, LearnApp);
