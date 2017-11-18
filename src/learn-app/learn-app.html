@@ -1,9 +1,33 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
 <dom-module id="learn-app">
   <template>
-  </template>
 
+    <!-- Route service -->
+    <app-location route="{{route}}" ></app-location>
+    <app-route
+      route="{{route}}"
+      pattern="[[pattern]]"
+      data="{{router}}"
+      tail="{{subroute}}"
+    >
+    </app-route>
+
+    <iron-pages
+      role="main"
+      selected="[[router.page]]"
+      attr-for-selected="name"
+      selected-attribute="visible"
+      fallback-selection="not-found"
+    >
+    
+    </iron-pages>
+
+
+  </template>
   <script>
     /**
     * @customElement
@@ -12,6 +36,55 @@
     class LearnApp extends Polymer.Element {
       static get is() {
         return 'learn-app'
+      }
+
+      static get properties() {
+        return {
+          /**
+          * Route service properties
+          **/
+
+          /**
+          * @name route
+          * @type {Object}
+          * @public
+          * @description Store current route configuration
+          **/
+          route: {
+            type: Object
+          },
+
+          /**
+          * @name router
+          * @type {Object}
+          * @public
+          * @description Store data obtained from route object
+          **/
+          router: {
+            type: Object
+          },
+
+          /**
+          * @name subroute
+          * @type {Object}
+          * @public
+          * @description Store subroute/tail configuration from current route
+          **/
+          subroute: {
+            type: Object
+          },
+
+          /**
+          * @name pattern
+          * @type {String}
+          * @public
+          * @description Pattern to configure current router properties @see {router} {route} {subroute}
+          **/
+          pattern: {
+            type: String,
+            value: '/:page'
+          }
+        }
       }
     }
 
