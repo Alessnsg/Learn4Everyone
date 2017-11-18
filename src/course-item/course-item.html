@@ -1,0 +1,138 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+
+<dom-module id="course-item">
+  <template>
+    <style include="iron-flex">
+      .course-item {
+        @apply --course-item;
+      }
+      .course-item .content {
+        @apply --course-item-content;
+      }
+      .course-item .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @apply --course-item-header;
+      }
+      .course-item .title {
+        font-size: var(--course-item-title-font-size, 24px);
+        @apply --course-item-title;
+      }
+      .course-item .subtitle {
+        font-size: var(--course-item-subtitle-font-size, 16px);
+        @apply --course-item-subtitle;
+      }
+      .course-item .icon {
+        font-size: var(--course-item-icon-size, 16px);
+        margin: 0.5rem;
+        @apply --course-item-icon;
+      }
+      .course-item .group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @apply --course-item-group;
+      }
+      .course-item .description {
+        @apply --course-item-description;
+      }
+    </style>
+
+    <!-- Route service -->
+    <app-route
+      route="[[route]]"
+      data="{{router}}"
+      tail="{{subroute}}"
+    >
+    </app-route>
+
+    <article class="course-item">
+      <paper-card image="[[thumbnail]]">
+        <!-- card content -->
+        <div class="card-content content">
+          <div class="header">
+            <span class="title">[[title]]</span>
+            <div class="group">
+              <iron-icon icon="[[icon]]" class="icon"></iron-icon>
+              <span class="subtitle">[[subtitle]]</span>
+            </div>
+          </div>
+          <p class="description">[[description]]</p>
+        </div>
+      </paper-card>
+    </article>
+
+  </template>
+  <script>
+    /**
+    * @customElement
+    * @polymer
+    **/
+    class CourseItem extends Polymer.Element {
+      static get is() {
+        return 'course-item'
+      }
+
+      static get properties() {
+        return {
+          /**
+          * @name icon
+          * @type {String}
+          * @public
+          * @description header icon
+          **/
+          icon: {
+            type: String,
+            value: 'editor:format-list-bulleted'
+          },
+
+          /**
+          * @name title
+          * @type {String}
+          * @public
+          * @description item title
+          **/
+          title: {
+            type: String
+          },
+
+          /**
+          * @name subtitle
+          * @type {String}
+          * @public
+          * @description item subtitle
+          **/
+          subtitle: {
+            type: String
+          },
+
+          /**
+          * @name description
+          * @type {String}
+          * @public
+          * @description item subtitle
+          **/
+          description: {
+            type: String
+          },
+
+          /**
+          * @name description
+          * @type {String}
+          * @public
+          * @description item tumbnail path
+          **/
+          thumbnail: {
+            type: String
+          }
+        }
+      }
+    }
+
+    window.customElements.define(CourseItem.is, CourseItem);
+  </script>
+</dom-module>

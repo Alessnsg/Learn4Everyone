@@ -1,0 +1,70 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../course-item/course-item.html">
+
+<dom-module id="course-list">
+  <template>
+
+    <section class="course-list">
+      <template is="dom-repeat" items="[[courses]]">
+        <course-item
+          title="[[item.title]]"
+          subtitle="[[item.subtitle]]"
+          description="[[item.description]]"
+          icon="[[item.icon]]"
+          thumbnail="[[item.thumbnail]]"
+        >
+        </course-item>
+      </template>
+    </section>
+
+  </template>
+  <script>
+    /**
+    * @customElement
+    * @polymer
+    **/
+    class CourseList extends Polymer.Element {
+      static get is() {
+        return 'course-list'
+      }
+
+      static get properties() {
+        return {
+          /**
+          * @name courses
+          * @type {Array}
+          * @public
+          * @description courses
+          **/
+          courses: {
+            type: Array,
+            value: [
+              {
+                title: 'Contaduria',
+                subtitle: '5 videos',
+                thumbnail: 'http://via.placeholder.com/350x150',
+                icon: 'editor:format-list-bulleted',
+                description: 'Aprende contaduria basica'
+              }
+            ]
+          },
+
+          /**
+          * @name filter
+          * @type {String}
+          * @public
+          * @description courses filter
+          **/
+          filter: {
+            type: String,
+            value: 'SHOW_ALL'
+          }
+        }
+      }
+    }
+
+    window.customElements.define(CourseList.is, CourseList);
+  </script>
+</dom-module>
