@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../course-list/course-list.html">
+
+
+<dom-module id="learn-courses">
+  <template>
+
+    <section class="learn-courses">
+      <course-list courses="[[courses]]"></course-list>
+    </section>
+
+  </template>
+  <script>
+    /**
+    * @customElement
+    * @polymer
+    **/
+    class LearnCourses extends Polymer.Element {
+      static get is() {
+        return 'learn-courses'
+      }
+
+      static get properties() {
+        return {}
+      }
+    }
+
+    window.customElements.define(LearnCourses.is, LearnCourses);
+  </script>
+</dom-module>
