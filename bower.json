@@ -5,7 +5,11 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
     "app-route": "https://github.com/PolymerElements/app-route.git#2.0.3",
-    "iron-pages": "https://github.com/PolymerElements/iron-pages.git#2.0.0"
+    "iron-pages": "https://github.com/PolymerElements/iron-pages.git#2.0.0",
+    "paper-card": "https://github.com/PolymerElements/paper-card.git#2.0.0",
+    "iron-flex-layout": "https://github.com/PolymerElements/iron-flex-layout.git#2.0.1",
+    "iron-icon": "https://github.com/PolymerElements/iron-icon.git#2.0.1",
+    "iron-icons": "https://github.com/PolymerElements/iron-icons.git#2.0.1"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",
