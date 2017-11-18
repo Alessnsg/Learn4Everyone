@@ -5,18 +5,36 @@
 
 <dom-module id="course-list">
   <template>
+    <style>
+      .course-list {
+        @apply --course-list;
+      }
+      .course-list .layout {
+        display: grid;
+        grid-gap: var(--course-list-grid-gap, 16px);
+        grid-template-columns: repeat(auto-fill, var(--course-list-columns-width, 350px));
+        justify-content: center;
+        @apply --course-list-layout;
+      }
+      .course-list .course {
+        @apply --course-list-course;
+      }
+    </style>
 
     <section class="course-list">
-      <template is="dom-repeat" items="[[courses]]">
-        <course-item
-          title="[[item.title]]"
-          subtitle="[[item.subtitle]]"
-          description="[[item.description]]"
-          icon="[[item.icon]]"
-          thumbnail="[[item.thumbnail]]"
-        >
-        </course-item>
-      </template>
+      <div class="layout">
+        <template is="dom-repeat" items="[[courses]]">
+          <course-item
+            class="course"
+            title="[[item.title]]"
+            subtitle="[[item.subtitle]]"
+            description="[[item.description]]"
+            icon="[[item.icon]]"
+            thumbnail="[[item.thumbnail]]"
+          >
+          </course-item>
+        </template>
+      </div>
     </section>
 
   </template>
@@ -40,15 +58,6 @@
           **/
           courses: {
             type: Array,
-            value: [
-              {
-                title: 'Contaduria',
-                subtitle: '5 videos',
-                thumbnail: 'http://via.placeholder.com/350x150',
-                icon: 'editor:format-list-bulleted',
-                description: 'Aprende contaduria basica'
-              }
-            ]
           },
 
           /**
