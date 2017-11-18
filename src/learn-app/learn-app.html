@@ -2,9 +2,14 @@
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="learn-app-custom-styles.html">
+<!-- pages -->
+<link rel="import" href="../learn-courses/learn-courses.html">
 
 <dom-module id="learn-app">
   <template>
+
+    <style include="learn-app-custom-styles" ></style>
 
     <!-- Route service -->
     <app-location route="{{route}}" ></app-location>
@@ -19,11 +24,11 @@
     <iron-pages
       role="main"
       selected="[[router.page]]"
-      attr-for-selected="name"
+      attr-for-selected="route"
       selected-attribute="visible"
       fallback-selection="not-found"
     >
-    
+      <learn-courses route="courses" ></learn-courses>
     </iron-pages>
 
 
@@ -83,6 +88,13 @@
           pattern: {
             type: String,
             value: '/:page'
+          },
+
+          /**
+          * Courses properties
+          **/
+          courses: {
+            type: Array
           }
         }
       }
