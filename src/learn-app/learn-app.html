@@ -151,10 +151,15 @@
               url: 'https://learn4everyone-80ba5.firebaseio.com'
             }
           },
+
+          /**
+          * @name signedIn
+          * @type {Object}
+          * @public
+          * @description signedIn flag
+          **/
           signedIn: {
-            type: Boolean,
-            reflectToAttribute: true,
-            value: false
+            type: Boolean
           },
 
         }
@@ -162,18 +167,18 @@
 
       ready() {
         super.ready();
+        this.addEventListener('sign-in-success', this.test)
         this.addEventListener('sign-in', this.signIn);
         this.addEventListener('sign-on', this.signOut);
       }
 
       signIn() {
-        this.$.firebase.signIn.call(this.$.firebase)
+        this.$.firebase.signIn()
       }
 
       signOut() {
         this.$.firebase.signOut()
       }
-
     }
 
     window.customElements.define(LearnApp.is, LearnApp);

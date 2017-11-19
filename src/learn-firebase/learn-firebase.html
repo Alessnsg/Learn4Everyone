@@ -6,7 +6,6 @@
 
 <dom-module id="learn-firebase">
   <template>
-    <h3>Hola</h3>
     <firebase-app
       name="[[name]]"
       api-key="[[key]]"
@@ -96,8 +95,7 @@
           **/
           signedIn: {
             type: Boolean,
-            notify: true,
-            value: false
+            notify: true
           },
 
           /**
@@ -116,10 +114,13 @@
       }
 
       signIn() {
-        const signIn = this.$.auth.signInWithPopup();
-        signIn
-          .then(user => this.set('user', user.additionalUserInfo.profile))
-          .catch(error => this.error = error)
+        this.$.auth.signInWithPopup()
+          .then(user => this.user = user.additionalUserInfo.profile )
+          .then(user => {
+            const successEvent = new CustomEvent('sign-in-success', {bubbles: true, composed: true, user })
+            this.dispatchEvent(successEvent);
+          })
+          .catch(error => this.error)
       }
 
       signOut() {
