@@ -1,0 +1,76 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+
+
+<dom-module id="learn-login">
+  <template>
+
+    <style>
+      :host {
+        position: absolute;
+        top: 46px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--paper-blue-grey-500); 
+        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1;
+        color: var(--paper-blue-grey-50);
+
+        @apply(--layout);
+        @apply(--layout-center-center);
+      }
+
+      :host([signed-in]) {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      paper-button > * {
+        vertical-align: middle;
+        text-transform: none;
+      }
+    </style>
+
+    <paper-button on-tap="signIn" disabled="[[disabled]]">
+      <iron-icon icon="account-circle"></iron-icon>
+      <span>Sign in with Google</span>
+    </paper-button>
+
+    </firebase-auth>
+  </template>
+
+  <script>
+    /**
+    * @customElement
+    * @polymer
+    **/
+    class LearnLogin extends Polymer.Element {
+      static get is() {
+        return 'learn-login'
+      }
+
+      static get properties() {
+        return {
+          signedIn: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: false
+          },
+          disabled: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: false
+          }
+        }
+      }
+
+      signIn () {
+        this.dispatchEvent(new CustomEvent('sign-in', {detail: {bubbles: true}}));
+      }
+    }
+
+    window.customElements.define(LearnLogin.is, LearnLogin);
+  </script>
+</dom-module>

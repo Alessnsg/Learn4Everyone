@@ -1,0 +1,79 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../course-item/course-item.html">
+
+<dom-module id="course-list">
+  <template>
+    <style>
+      .course-list {
+        @apply --course-list;
+      }
+      .course-list .layout {
+        display: grid;
+        grid-gap: var(--course-list-grid-gap, 16px);
+        grid-template-columns: repeat(auto-fill, var(--course-list-columns-width, 350px));
+        justify-content: center;
+        @apply --course-list-layout;
+      }
+      .course-list .course {
+        @apply --course-list-course;
+      }
+    </style>
+
+    <section class="course-list">
+      <div class="layout">
+        <template is="dom-repeat" items="[[courses]]">
+          <course-item
+            class="course"
+            title="[[item.title]]"
+            subtitle="[[item.subtitle]]"
+            description="[[item.description]]"
+            icon="[[item.icon]]"
+            thumbnail="[[item.thumbnail]]"
+          >
+          </course-item>
+        </template>
+      </div>
+    </section>
+
+  </template>
+  <script>
+    /**
+    * @customElement
+    * @polymer
+    **/
+    class CourseList extends Polymer.Element {
+      static get is() {
+        return 'course-list'
+      }
+
+      static get properties() {
+        return {
+          /**
+          * @name courses
+          * @type {Array}
+          * @public
+          * @description courses
+          **/
+          courses: {
+            type: Array,
+          },
+
+          /**
+          * @name filter
+          * @type {String}
+          * @public
+          * @description courses filter
+          **/
+          filter: {
+            type: String,
+            value: 'SHOW_ALL'
+          }
+        }
+      }
+    }
+
+    window.customElements.define(CourseList.is, CourseList);
+  </script>
+</dom-module>

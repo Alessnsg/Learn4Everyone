@@ -1,9 +1,65 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../login/learn-toolbar.html">
+<link rel="import" href="../login/learn-login.html">
+<link rel="import" href="../learn-courses/learn-courses.html">
+<link rel="import" href="../learn-firebase/learn-firebase.html">
+
 
 <dom-module id="learn-app">
   <template>
-  </template>
+    <style include="learn-app-custom-styles" ></style>
 
+    <!-- Route service -->
+    <app-location route="{{route}}" ></app-location>
+    <app-route
+      route="{{route}}"
+      pattern="[[pattern]]"
+      data="{{router}}"
+      tail="{{subroute}}"
+    >
+    </app-route>
+
+    <!-- Learn Toolbar -->
+    <learn-toolbar
+      signed-in="[[signedIn]]"
+      on-sign-out="signOut"
+      user-data="[[user]]">
+    </learn-toolbar>
+
+    <!-- Pages -->
+    <iron-pages
+      role="main"
+      selected="[[router.page]]"
+      attr-for-selected="route"
+      selected-attribute="visible"
+      fallback-selection="not-found"
+    >
+      <learn-courses route="courses" ></learn-courses>
+      <learn-login
+        route="login"
+        on-sign-in="signIn"
+        signed-in="[[signedIn]]"
+        disabled="[[!online]]">
+      </learn-login>
+    </iron-pages>
+
+    <!-- Firebase api -->
+    <learn-firebase
+      id="firebase"
+      name="[[firebase.name]]"
+      key="[[firebase.key]]"
+      domain="[[firebase.domain]]"
+      url="[[firebase.url]]"
+      provider="google"
+      user="{{user}}"
+      signed-in="{{signedIn}}"
+    >
+    </learn-firebase>
+
+  </template>
   <script>
     /**
     * @customElement
@@ -12,6 +68,121 @@
     class LearnApp extends Polymer.Element {
       static get is() {
         return 'learn-app'
+      }
+
+      static get properties() {
+        return {
+          /**
+          * Route service properties
+          **/
+
+          /**
+          * @name route
+          * @type {Object}
+          * @public
+          * @description Store current route configuration
+          **/
+          route: {
+            type: Object
+          },
+
+          /**
+          * @name router
+          * @type {Object}
+          * @public
+          * @description Store data obtained from route object
+          **/
+          router: {
+            type: Object
+          },
+
+          /**
+          * @name subroute
+          * @type {Object}
+          * @public
+          * @description Store subroute/tail configuration from current route
+          **/
+          subroute: {
+            type: Object
+          },
+
+          /**
+          * @name pattern
+          * @type {String}
+          * @public
+          * @description Pattern to configure current router properties @see {router} {route} {subroute}
+          **/
+          pattern: {
+            type: String,
+            value: '/:page'
+          },
+
+          /**
+          * @name courses
+          * @type {Array}
+          * @public
+          * @description courses from service
+          **/
+          courses: {
+            type: Array
+          },
+
+          /**
+          * @name user
+          * @type {Object}
+          * @public
+          * @description user
+          **/
+          user: {
+            type: Object,
+          },
+
+          /**
+          * @name Firebase
+          * @type {Object}
+          * @public
+          * @description firebase credentiasl
+          **/
+          firebase: {
+            type: Object,
+            value: {
+              name: 'learn4everyone',
+              key: 'AIzaSyBL7hd9LafQluVljDXZK9V_F2eIhA0CS0c',
+              domain: 'learn4everyone-80ba5.firebaseapp.com',
+              url: 'https://learn4everyone-80ba5.firebaseio.com'
+            }
+          },
+
+          /**
+          * @name signedIn
+          * @type {Object}
+          * @public
+          * @description signedIn flag
+          **/
+          signedIn: {
+            type: Boolean
+          },
+
+        }
+      }
+
+      ready() {
+        super.ready();
+        this.addEventListener('sign-in-success', this.signInSuccess)
+        this.addEventListener('sign-in', this.signIn);
+        this.addEventListener('sign-on', this.signOut);
+      }
+
+      signIn() {
+        this.$.firebase.signIn()
+      }
+
+      signOut() {
+        this.$.firebase.signOut()
+      }
+
+      signInSuccess() {
+        this.set('router.page', 'courses')
       }
     }
 
