@@ -46,6 +46,7 @@
       </learn-login>
     </iron-pages>
 
+    <!-- Firebase api -->
     <learn-firebase
       id="firebase"
       name="[[firebase.name]]"
@@ -167,7 +168,7 @@
 
       ready() {
         super.ready();
-        this.addEventListener('sign-in-success', this.test)
+        this.addEventListener('sign-in-success', this.signInSuccess)
         this.addEventListener('sign-in', this.signIn);
         this.addEventListener('sign-on', this.signOut);
       }
@@ -178,6 +179,10 @@
 
       signOut() {
         this.$.firebase.signOut()
+      }
+
+      signInSuccess() {
+        this.set('router.page', 'courses')
       }
     }
 
