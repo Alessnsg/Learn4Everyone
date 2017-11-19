@@ -1,13 +1,11 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
-<link rel="import" href="../../bower_components/polymerfire/firebase-app.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
-<link rel="import" href="../../bower_components/google-signin/google-signin.html">
 <link rel="import" href="../login/learn-toolbar.html">
 <link rel="import" href="../login/learn-login.html">
 <link rel="import" href="../learn-courses/learn-courses.html">
+<link rel="import" href="../learn-firebase/learn-firebase.html">
 
 
 <dom-module id="learn-app">
@@ -24,6 +22,14 @@
     >
     </app-route>
 
+    <!-- Learn Toolbar -->
+    <learn-toolbar
+      signed-in="[[signedIn]]"
+      on-sign-out="signOut"
+      user-data="[[user]]">
+    </learn-toolbar>
+
+    <!-- Pages -->
     <iron-pages
       role="main"
       selected="[[router.page]]"
@@ -32,33 +38,25 @@
       fallback-selection="not-found"
     >
       <learn-courses route="courses" ></learn-courses>
+      <learn-login
+        route="login"
+        on-sign-in="signIn"
+        signed-in="[[signedIn]]"
+        disabled="[[!online]]">
+      </learn-login>
     </iron-pages>
 
-    <learn-toolbar
-    signed-in="[[signedIn]]"
-    on-sign-out="signOut"
-    user-data="[[userData]]">
-    </learn-toolbar>
-
-  <learn-login
-    on-sign-in="signIn"
-    signed-in="[[signedIn]]"
-    disabled="[[!online]]">
-    </learn-login>
-  
-  <firebase-auth
-    id="auth"
-    app-name="learn4everyone"
-    provider="google"
-    signed-in="{{signedIn}}">
-    </firebase-auth>
-
-    <firebase-app
-    name="learn4everyone"
-    api-key="AIzaSyBL7hd9LafQluVljDXZK9V_F2eIhA0CS0c"
-    auth-domain="learn4everyone-80ba5.firebaseapp.com"
-    database-url="https://learn4everyone-80ba5.firebaseio.com">
-  </firebase-app>
+    <learn-firebase
+      id="firebase"
+      name="[[firebase.name]]"
+      key="[[firebase.key]]"
+      domain="[[firebase.domain]]"
+      url="[[firebase.url]]"
+      provider="google"
+      user="{{user}}"
+      signedIn="{{signedIn}}"
+    >
+    </learn-firebase>
 
   </template>
   <script>
@@ -119,35 +117,58 @@
           },
 
           /**
-          * Courses properties
+          * @name courses
+          * @type {Array}
+          * @public
+          * @description courses from service
           **/
           courses: {
             type: Array
           },
-          userData: {
+
+          /**
+          * @name user
+          * @type {Object}
+          * @public
+          * @description user
+          **/
+          user: {
             type: Object,
-            value: () => { return {} },
-            reflectToAttribute: true,
+          },
+
+          /**
+          * @name Firebase
+          * @type {Object}
+          * @public
+          * @description firebase credentiasl
+          **/
+          firebase: {
+            type: Object,
+            value: {
+              name: 'learn4everyone',
+              key: 'AIzaSyBL7hd9LafQluVljDXZK9V_F2eIhA0CS0c',
+              domain: 'learn4everyone-80ba5.firebaseapp.com',
+              url: 'https://learn4everyone-80ba5.firebaseio.com'
+            }
           }
+
         }
       }
 
       ready() {
         super.ready();
+        this.addEventListener('sign-in', this.signIn);
+        this.addEventListener('sign-on', this.signOut);
       }
 
       signIn() {
-        let isSignin = this.$.auth.signInWithPopup();
-	      isSignin.then( (data) => {
-          this.userData = data.additionalUserInfo.profile;
-        });
-	    }
+        this.$.firebase.signIn.call(this.$.firebase)
+      }
 
       signOut() {
-        if (this.$.auth) {
-          this.$.auth.signOut();
-        }
+        this.$.firebase.signOut()
       }
+
     }
 
     window.customElements.define(LearnApp.is, LearnApp);

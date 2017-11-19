@@ -1,0 +1,132 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../../bower_components/google-signin/google-signin.html">
+
+<dom-module id="learn-firebase">
+  <template>
+    <h3>Hola</h3>
+    <firebase-app
+      name="[[name]]"
+      api-key="[[key]]"
+      auth-domain="[[domain]]"
+      database-url="[[url]]">
+    </firebase-app>
+
+    <firebase-auth
+      id="auth"
+      user="{{user}}"
+      app-name="[[name]]"
+      provider="[[provider]]"
+      signed-in="{{signedIn}}"
+    >
+    </firebase-auth>
+
+  </template>
+  <script>
+    /**
+    * @customElement
+    * @polymer
+    **/
+    class LearnFirebase extends Polymer.Element {
+      static get is() {
+        return 'learn-firebase'
+      }
+
+      static get properties() {
+        return {
+          /**
+          * Firebase Configuration
+          **/
+
+          /**
+          * @type {String}
+          * @public
+          * @description Firebase project name
+          **/
+          name: {
+            type: String
+          },
+
+          /**
+          * @type {String}
+          * @public
+          * @description Firebase project key
+          **/
+          key: {
+            type: String
+          },
+
+          /**
+          * @type {String}
+          * @public
+          * @description Firebase project domain
+          **/
+          domain: {
+            type: String
+          },
+
+          /**
+          * @type {String}
+          * @public
+          * @description Firebase project url
+          **/
+          url: {
+            type: String
+          },
+
+          /**
+          * Authorizacion configuration
+          **/
+
+          /**
+          * @type {String}
+          * @public
+          * @description auth provider
+          **/
+          provider: {
+            type: String
+          },
+
+          /**
+          * @type {Boolean}
+          * @public
+          * @description signIn configuration
+          **/
+          signedIn: {
+            type: Boolean
+          },
+
+          /**
+          * User get from firebase auth
+          **/
+
+          /**
+          * @type {object}
+          * @public
+          * @description user
+          **/
+          user: {
+            type: Object
+          }
+        }
+      }
+
+      signIn() {
+        const signIn = this.$.auth.signInWithPopup();
+        signIn
+          .then(user => this.user = user.additionalUserInfo.profile)
+          .catch(error => this.error = error)
+      }
+
+      signOut() {
+        if (this.$.auth) {
+          this.$.auth.signOut();
+        }
+      }
+    }
+
+    window.customElements.define(LearnFirebase.is, LearnFirebase);
+  </script>
+</dom-module>
