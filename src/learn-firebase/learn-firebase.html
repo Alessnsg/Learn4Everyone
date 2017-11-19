@@ -95,7 +95,9 @@
           * @description signIn configuration
           **/
           signedIn: {
-            type: Boolean
+            type: Boolean,
+            notify: true,
+            value: false
           },
 
           /**
@@ -116,7 +118,7 @@
       signIn() {
         const signIn = this.$.auth.signInWithPopup();
         signIn
-          .then(user => this.user = user.additionalUserInfo.profile)
+          .then(user => this.set('user', user.additionalUserInfo.profile))
           .catch(error => this.error = error)
       }
 

@@ -54,7 +54,7 @@
       url="[[firebase.url]]"
       provider="google"
       user="{{user}}"
-      signedIn="{{signedIn}}"
+      signed-in="{{signedIn}}"
     >
     </learn-firebase>
 
@@ -150,7 +150,12 @@
               domain: 'learn4everyone-80ba5.firebaseapp.com',
               url: 'https://learn4everyone-80ba5.firebaseio.com'
             }
-          }
+          },
+          signedIn: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: false
+          },
 
         }
       }
